@@ -1,7 +1,7 @@
 import React from "react";
 
 import loginImg from "../../public/AuthImg/Login.png";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import useAuth from "../HOOKS/useAuth";
 import toast from "react-hot-toast";
@@ -9,6 +9,7 @@ import logo from '../../public/CompanyLogo/Logo.png'
 
 const Login = () => {
   const navigate=useNavigate();
+  const location=useLocation()
   const {
     register,
     handleSubmit,
@@ -19,7 +20,7 @@ const Login = () => {
     signInUser(data.Email, data.password)
       .then(() => {
         toast.success('Logged In Successfully');
-        navigate('/')
+        navigate(location?.state || '/')
 
       })
       .catch((error) => {
@@ -88,7 +89,9 @@ const Login = () => {
               <div className="pt-2 md:pt-0">
                 <p className="text-sm font-medium text-heading">
                   Don't have an account?
-                  <Link to="/register">
+                  <Link
+                  state={location.state} 
+                  to="/register">
                     <span className="border-b-2 hover:border-b-yellow-500">
                       Register
                     </span>

@@ -1,9 +1,10 @@
 import React from "react";
 import useAuth from "../HOOKS/useAuth";
-import { Navigate } from "react-router";
+import { Navigate, useLocation } from "react-router";
 
 const PvRouter = ({ children }) => {
 const { user, loading } = useAuth();
+const location=useLocation();
   if (loading) {
     <div>
       <span className="loading loading-ball loading-md"></span>
@@ -13,7 +14,7 @@ const { user, loading } = useAuth();
   }
 
   if (!user) {
-    return <Navigate to='/login'></Navigate>;
+    return <Navigate state={location.pathname} to='/login'></Navigate>;
   }
 
 
