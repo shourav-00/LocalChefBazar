@@ -2,13 +2,20 @@ import React, { useState, useRef, useEffect } from "react";
 import logo from "../../public/CompanyLogo/Logo2.png";
 import { Link, NavLink, useLocation } from "react-router";
 import { HiBars3 } from "react-icons/hi2";
-import { FaArrowLeft, FaArrowRight, FaCheck, FaUser, FaUserLarge } from "react-icons/fa6";
+import {
+  FaArrowLeft,
+  FaArrowRight,
+  FaCheck,
+  FaUser,
+  FaUserLarge,
+} from "react-icons/fa6";
 import useAuth from "../HOOKS/useAuth";
 import toast from "react-hot-toast";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { TiCancelOutline } from "react-icons/ti";
 import { LiaJediOrder } from "react-icons/lia";
 import { FaExclamationTriangle } from "react-icons/fa";
+import { img } from "framer-motion/client";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -20,6 +27,7 @@ const Navbar = () => {
   const popupRef = useRef(null);
   const profilePicRef = useRef(null);
   const logoutPopupRef = useRef(null);
+
   //LogOut popUp Close
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -65,7 +73,10 @@ const Navbar = () => {
     logOut()
       .then(() => {
         toast.success("Logout successfully");
+
+        // 🔑 RESET ALL POPUPS
         setShowProfilePopup(false);
+        setLogOutPopUp(false);
       })
       .catch(() => {
         toast.error("Something went wrong!");
@@ -161,7 +172,7 @@ const Navbar = () => {
             {showProfilePopup && user && (
               <div
                 ref={popupRef}
-                className="absolute top-14 right-0 mt-2 w-64 bg-[#ffcc00] border-4 border-gray-400 shadow-xl rounded-lg border border-gray-200 z-50"
+                className="absolute top-14 right-0 mt-2 w-64 bg-[#ffcc00] border-4 border-gray-400 shadow-xl rounded-lg  z-50"
                 style={{
                   animation: "fadeIn 0.2s ease-in-out",
                   boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
@@ -273,14 +284,12 @@ const Navbar = () => {
 
             {/* Regular Logout Button (hidden when popup is shown) */}
             {user && !showProfilePopup ? (
-              <Link to="/">
-                <button
-                  onClick={handleLogPopUp}
-                  className="bg-[#ffcc00] px-3 py-2 rounded-sm text-black font-semibold hover:bg-yellow-500 transition-colors cursor-pointer relative"
-                >
-                  Logout
-                </button>
-              </Link>
+              <button
+                onClick={handleLogPopUp}
+                className="bg-[#ffcc00] px-3 py-2 rounded-sm text-black font-semibold hover:bg-yellow-500 transition-colors cursor-pointer relative"
+              >
+                Logout
+              </button>
             ) : (
               !user && (
                 <Link to="/login">
@@ -305,7 +314,10 @@ const Navbar = () => {
                 </h2>
                 <div className="border-t border-t-red-600 w-full"></div>
                 <div
-                  onClick={handleLogout}
+                  onClick={() => {
+                    handleLogout();
+                    setLogOutPopUp(false);
+                  }}
                   className="group relative flex items-center justify-center gap-2 mt-2 py-2 rounded-lg cursor-pointer hover:bg-red-300 transition-all duration-300"
                 >
                   {/* Left Accent Line */}
@@ -334,7 +346,7 @@ const Navbar = () => {
                   <TiCancelOutline className="text-gray-600 group-hover:text-emerald-700 group-hover:scale-110 transition-all duration-300" />
 
                   {/* Text Transition */}
-                  <h2 className="font-bold text-gray-700 group-hover:text-emerald-800 transition-colors duration-300">
+                  <h2 className="font-bold text-gray-700 group-hover:text-emerald-800 transition-colors duration-300 ">
                     Cancel
                   </h2>
 
@@ -351,7 +363,6 @@ const Navbar = () => {
           <div className="drawer drawer-end">
             <input id="my-drawer-5" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content">
-              {/* Page content here */}
               <label htmlFor="my-drawer-5">
                 <HiBars3 className="w-8 h-8 mt-[7px] text-[#ffcc00] font-bold" />
               </label>
@@ -362,123 +373,86 @@ const Navbar = () => {
                 aria-label="close sidebar"
                 className="drawer-overlay"
               ></label>
-              <ul className="bg-gray-100 min-h-full w-70 p-3">
-                {/* Sidebar content here */}
-                <div className="flex flex-col justify-center items-center pb-2 border-b-2 border-b-[#ffcc00]">
-                  <Link to="/">
-                    <img
-                      className="w-20 h-20 rounded-full bg-[#ffcc00]"
-                      src={logo}
-                      alt="Coming Soon"
-                    />
-                  </Link>
-                </div>
-                <div className="flex flex-col gap-3 mt-5 ml-5">
-                  <NavLink
-                    to="/"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-black font-semibold text-sm scale-105 mt-[2px] transition-all ease-in-out duration-300 bg-[#ffcc00] px-4 py-2 rounded-2xl"
-                        : "text-black font-semibold text-sm scale-105 mt-[2px] hover:bg-gray-300 transition-all ease-in-out duration-300 bg-gray-200 px-4 py-2 hover:bg-gray-300 rounded-2xl"
-                    }
-                  >
-                    {" "}
-                    Home
-                  </NavLink>
-                  <NavLink
-                    to="/meals"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-black font-semibold text-sm scale-105 mt-[2px] transition-all ease-in-out duration-300 bg-[#ffcc00] px-4 py-2 rounded-2xl"
-                        : "text-black font-semibold text-sm scale-105 mt-[2px] hover:bg-gray-300 transition-all ease-in-out duration-300 bg-gray-200 px-4 py-2 hover:bg-gray-300 rounded-2xl"
-                    }
-                  >
-                    {" "}
-                    Meals
-                  </NavLink>
-
-                  <NavLink
-                    to="/ventors"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-black font-semibold text-sm scale-105 mt-[2px] transition-all ease-in-out duration-300 bg-[#ffcc00] px-4 py-2 rounded-2xl"
-                        : "text-black font-semibold text-sm scale-105 mt-[2px] hover:bg-gray-300 transition-all ease-in-out duration-300 bg-gray-200 px-4 py-2 hover:bg-gray-300 rounded-2xl"
-                    }
-                  >
-                    {" "}
-                    Ventors
-                  </NavLink>
-
-                  <NavLink to=""></NavLink>
+              <div className="bg-gray-100 min-h-full w-70 p-3 flex flex-col">
+                {/* Top section */}
+                <div>
+                  <div className="flex flex-col justify-center items-center pb-2 border-b-2 border-b-[#ffcc00]">
+                    <Link to="/">
+                      <img
+                        className="w-20 h-20 rounded-full bg-[#ffcc00]"
+                        src={logo}
+                        alt="Coming Soon"
+                      />
+                    </Link>
+                  </div>
+                  <div className="flex flex-col gap-3 mt-5 ml-5">
+                    <NavLink
+                      to="/"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-black font-semibold text-sm scale-105 mt-[2px] transition-all ease-in-out duration-300 bg-[#ffcc00] px-4 py-2 rounded-2xl"
+                          : "text-black font-semibold text-sm scale-105 mt-[2px] hover:bg-gray-300 transition-all ease-in-out duration-300 bg-gray-200 px-4 py-2 hover:bg-gray-300 rounded-2xl"
+                      }
+                    >
+                      Home
+                    </NavLink>
+                    <NavLink
+                      to="/meals"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-black font-semibold text-sm scale-105 mt-[2px] transition-all ease-in-out duration-300 bg-[#ffcc00] px-4 py-2 rounded-2xl"
+                          : "text-black font-semibold text-sm scale-105 mt-[2px] hover:bg-gray-300 transition-all ease-in-out duration-300 bg-gray-200 px-4 py-2 hover:bg-gray-300 rounded-2xl"
+                      }
+                    >
+                      Meals
+                    </NavLink>
+                    <NavLink
+                      to="/ventors"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-black font-semibold text-sm scale-105 mt-[2px] transition-all ease-in-out duration-300 bg-[#ffcc00] px-4 py-2 rounded-2xl"
+                          : "text-black font-semibold text-sm scale-105 mt-[2px] hover:bg-gray-300 transition-all ease-in-out duration-300 bg-gray-200 px-4 py-2 hover:bg-gray-300 rounded-2xl"
+                      }
+                    >
+                      Ventors
+                    </NavLink>
+                  </div>
                 </div>
 
-                <div className="flex flex-col justify-center items-end gap-3 p-3 mt-10 min-h-full">
-                  {user ? (
-                    <div className="w-full ">
-                      <div className="cursor-pointer hover:scale-105 transition-transform flex justify-center mb-2">
-                        {
+                {/* Bottom section - pushes to end */}
+                <div className="mt-auto">
+                  <div className="flex flex-col justify-center items-end gap-3 p-3">
+                    {user ? (
+                      <div className="w-full">
+                        <div className="cursor-pointer hover:scale-105 transition-transform flex justify-center mb-2">
                           <img
-                            className="border02 border-yellow-300 rounded-full h-8 w-8"
-                            src="<FaUser />"
-                            alt=""
+                            className="border-2 border-yellow-300 rounded-full h-12 w-12"
+                            src={user?.photoURL}
+                            alt="Profile"
                           />
-                        }
-                      </div>
-                      <Link to="/">
+                        </div>
                         <button
-                          onClick={handleLogPopUp}
-                          className="btn bg-[#ffcc00] rounded-[12px] w-full "
+                          onClick={handleLogout}
+                          className="btn bg-[#ffcc00] rounded-[12px] w-full mt-2"
                         >
                           Sign Out
                         </button>
-                      </Link>
-                    </div>
-                  ) : (
-                    <div className="w-full">
-                      <div className="cursor-pointer hover:scale-105 transition-transform flex justify-center mb-2">
-                        <FaUser className="border-2 border-yellow-300 rounded-full h-10 w-10 p-1" />
                       </div>
-                      <Link to="/login">
-                        <button className="btn bg-[#ffcc00] rounded-[12px] w-full ">
-                          Sign In
-                        </button>
-                      </Link>
-                    </div>
-                  )}
-
-                  {user && logOutPopUp && (
-                    <div
-                      ref={logoutPopupRef}
-                      className="absolute top-100 right-0 left-10 mt-2 w-54 bg-[#ffcc00] shadow-xl rounded-lg border border-gray-200 z-50 py-2"
-                      style={{
-                        animation: "fadeIn 0.2s ease-in-out",
-                        boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
-                      }}
-                    >
-                      <h2 className="text-center my-2 text-black font-semibold">
-                        Are you sure{" "}
-                        <span className="text-red-600 font-bold">?</span>{" "}
-                      </h2>
-                      <div className="border-t border-t-red-600 w-full"></div>
-                      <div
-                        onClick={handleLogout}
-                        className="flex items-center justify-center gap-2 mt-2 hover:text-red-600"
-                      >
-                        <RiLogoutCircleRLine className=" hover:text-red-600 mt-1 " />
-
-                        <h2 className="font-bold hover:text-red-600">
-                          Log Out
-                        </h2>
+                    ) : (
+                      <div className="w-full">
+                        <div className="cursor-pointer hover:scale-105 transition-transform flex justify-center mb-2">
+                          <FaUser className="border-2 border-yellow-300 rounded-full h-10 w-10 p-1" />
+                        </div>
+                        <Link to="/login">
+                          <button className="btn bg-[#ffcc00] rounded-[12px] w-full mt-2">
+                            Sign In
+                          </button>
+                        </Link>
                       </div>
-                      <div className="border-t border-t-red-600 w-full mt-1"></div>
-                      <div className="flex justify-center items-center gap-1 mt-1 hover:text-green-600">
-                        <TiCancelOutline />
-                        <h2 className="font-bold text-center my-1">Cancel</h2>
-                      </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </ul>
+              </div>
             </div>
           </div>
         </div>
