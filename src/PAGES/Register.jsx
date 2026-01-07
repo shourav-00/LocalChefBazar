@@ -1,6 +1,6 @@
 import React from "react";
 import regImg from "../../public/AuthImg/Registration.webp";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import useAuth from "../HOOKS/useAuth";
 import toast from "react-hot-toast";
@@ -14,6 +14,7 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const location=useLocation()
   const { signUpUser, getRegisterUserInfo, loading, setUser } = useAuth();
 
   const handleReg = (data) => {
@@ -240,7 +241,8 @@ const Register = () => {
                 <div className="pt-2 md:pt-0 mb-5">
                   <p className="text-sm font-medium text-heading">
                     Already have an account?{" "}
-                    <Link to="/login" className="inline-block">
+                    <Link 
+                    state={location.state}to="/login" className="inline-block">
                       <span className="border-b-2 border-b-gray-600 hover:border-b-yellow-300 transition-colors">
                         Login here
                       </span>
