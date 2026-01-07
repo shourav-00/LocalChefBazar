@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import logo from "../../public/CompanyLogo/Logo2.png";
 import { Link, NavLink, useLocation } from "react-router";
 import { HiBars3 } from "react-icons/hi2";
-import { FaArrowRight, FaCheck, FaUser, FaUserLarge } from "react-icons/fa6";
+import { FaArrowLeft, FaArrowRight, FaCheck, FaUser, FaUserLarge } from "react-icons/fa6";
 import useAuth from "../HOOKS/useAuth";
 import toast from "react-hot-toast";
 import { RiLogoutCircleRLine } from "react-icons/ri";
@@ -306,16 +306,40 @@ const Navbar = () => {
                 <div className="border-t border-t-red-600 w-full"></div>
                 <div
                   onClick={handleLogout}
-                  className="flex items-center justify-center gap-2 mt-2 hover:text-red-600"
+                  className="group relative flex items-center justify-center gap-2 mt-2 py-2 rounded-lg cursor-pointer hover:bg-red-300 transition-all duration-300"
                 >
-                  <RiLogoutCircleRLine className=" hover:text-red-600 mt-1 " />
+                  {/* Left Accent Line */}
+                  <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-red-400 to-rose-500 rounded-r-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                  <h2 className="font-bold hover:text-red-600">Log Out</h2>
+                  {/* Icon with Smooth Transition */}
+                  <RiLogoutCircleRLine className="text-red-600 group-hover:text-red-700 group-hover:scale-110 transition-all duration-300" />
+
+                  {/* Text with Color Shift */}
+                  <h2 className="font-bold text-red-700 group-hover:text-red-800 transition-colors duration-300">
+                    Log Out
+                  </h2>
+
+                  {/* Subtle Arrow */}
+                  <FaArrowRight className="text-red-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 ml-1" />
                 </div>
                 <div className="border-t border-t-red-600 w-full mt-1"></div>
-                <div className="flex justify-center items-center gap-1 mt-1 hover:text-green-600">
-                  <TiCancelOutline />
-                  <h2 className="font-bold  text-center my-1">Cancel</h2>
+                <div
+                  onClick={() => setLogOutPopUp(false)}
+                  className="group relative flex items-center justify-center gap-2 py-2 rounded-lg cursor-pointer hover:bg-emerald-50 transition-all duration-300"
+                >
+                  {/* Left Accent Line */}
+                  <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-emerald-400 to-green-500 rounded-r-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                  {/* Smooth Icon */}
+                  <TiCancelOutline className="text-gray-600 group-hover:text-emerald-700 group-hover:scale-110 transition-all duration-300" />
+
+                  {/* Text Transition */}
+                  <h2 className="font-bold text-gray-700 group-hover:text-emerald-800 transition-colors duration-300">
+                    Cancel
+                  </h2>
+
+                  {/* Subtle Arrow */}
+                  <FaArrowLeft className="text-emerald-300 opacity-0 group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-300 mr-1" />
                 </div>
               </div>
             )}

@@ -45,7 +45,7 @@ const Register = () => {
           .then(() => {
             toast.dismiss(toastId);
             toast.success("Welcome to LocalChef Bazar!");
-            navigate("/");
+            navigate(location.state || '/');
            
           })
           .catch((err)=>{
